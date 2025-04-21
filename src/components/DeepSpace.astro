@@ -1,0 +1,104 @@
+---
+import { DENSITY, INTERVAL } from "../config";
+---
+
+<astro-space-bg id="astro-space-bg" data-density={DENSITY} data-interval={INTERVAL}></astro-space-bg>
+<script>
+  class SpaceBg extends HTMLElement {
+    constructor() {
+      super();
+      const container = document.getElementById("astro-space-bg");
+      if (!container) return;
+
+      const density = parseInt(container.dataset.density || "1");
+      const interval = parseInt(container.dataset.interval || '20');
+
+      const width = container.clientWidth;
+      const height = container.clientHeight;
+
+      const blocksX = Math.ceil(width / 100);
+      const blocksY = Math.ceil(height / 100);
+
+      for (let x = 0; x < blocksX; x++) {
+        for (let y = 0; y < blocksY; y++) {
+          for (let i = 0; i < density; i++) {
+            console.log("MAKING STAR", x, y, i);
+            const coords = getCoords(x, y);
+            const div = document.createElement("div");
+            div.classList.add("star");
+            div.style.setProperty("--x", `${coords.x}px`);
+            div.style.setProperty("--y", `${coords.y}px`);
+            div.style.setProperty('--delay', `${Math.random() * interval}s`)
+            container.appendChild(div);
+          }
+        }
+      }
+    }
+  }
+  customElements.define("astro-space-bg", SpaceBg);
+
+  function getCoords(x: number, y: number) {
+    const x0 = x * 100;
+    const y0 = y * 100;
+    const dX = Math.round(Math.random() * 100);
+    const dY = Math.round(Math.random() * 100);
+    return { x: x0 + dX, y: y0 + dY };
+  }
+</script>
+<style is:global>
+@keyframes twinkle {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  25% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(2);
+  }
+  75% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0):
+  }
+}
+
+  #astro-space-bg {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+  }
+
+  #astro-space-bg .star {
+    --x: 0;
+    --y: 0;
+    --size: 0.125rem;
+    --delay: 2s;
+    --duration: 20s;
+    opacity: 0;
+    color: ghostwhite;
+    font-size: var(--size);
+    width: var(--size);
+    height: var(--size);
+    max-width: var(--size);
+    min-height: var(--size);
+    position: absolute;
+    top: var(--y);
+    left: var(--x);
+    animation: twinkle var(--duration) infinite;
+    animation-delay: var(--delay);
+    transition: all var(--duration) ease;
+  }
+
+  #astro-space-bg .star::before {
+    content: "\02726";
+  }
+</style>

@@ -6,3 +6,7 @@ export const WIND = {
   y: -0.7,
   z: 0.01,
 };
+
+// Number of particles per 100px x 100px square;
+export const DENSITY = 1;
+export const INTERVAL = 20;

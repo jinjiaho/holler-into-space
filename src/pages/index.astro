@@ -1,6 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import SnowyNight from "../components/SnowyNightBg.astro";
+import DeepSpace from "../components/DeepSpace.astro";
 import Holler from "../components/Holler.astro";
 ---
 
@@ -14,34 +14,7 @@ import Holler from "../components/Holler.astro";
 </style>
 <Layout>
   <main>
-    <SnowyNight />
+    <DeepSpace />
     <Holler />
   </main>
 </Layout>
-<script>
-  import Scene from "../classes/Scene";
-
-  const container = document.getElementById("scene");
-  const width = container.clientWidth;
-  const height = container.clientHeight;
-  const scene = new Scene({
-    container,
-    width,
-    height,
-    fov: 18,
-    cameraDistance: 5,
-    aspectRatio: width / height,
-  });
-
-  document.addEventListener("visibilitychange", function () {
-    if (document.hidden) {
-      scene.stopParticleSystem();
-      return;
-    }
-    if (scene.particleInterval === null) {
-      scene.startParticleSystem();
-    }
-  });
-
-  scene.render();
-</script>
