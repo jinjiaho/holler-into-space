@@ -9,4 +9,5 @@ export const WIND = {
 
 // Number of particles per 100px x 100px square;
 export const DENSITY = 1;
-export const INTERVAL = 20;
+export const INTERVAL = 5;
+export const DELAY_FACTOR = 1.5;
