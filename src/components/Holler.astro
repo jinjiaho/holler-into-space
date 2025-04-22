@@ -25,7 +25,7 @@ export const FADE_DURATION = 15;
     transform: translate(-50%, -50%);
     text-align: center;
     display: grid;
-    grid-template-rows: 8fr 2fr;
+    grid-template-rows: auto 10rem;
   }
 
   .holler * {
@@ -60,6 +60,7 @@ export const FADE_DURATION = 15;
     align-items: stretch;
     flex-direction: column;
     gap: 1rem;
+    padding: 3rem;
     box-shadow: inset 0px 8px 24px 0px rgba(15, 15, 15, 0.7);
   }
 
@@ -71,6 +72,7 @@ export const FADE_DURATION = 15;
     padding: 0 1vw;
     width: 100%;
     box-sizing: border-box;
+    resize: none;
   }
 
   #holler-input:focus {
@@ -80,15 +82,9 @@ export const FADE_DURATION = 15;
 <astro-holler class="holler" data-fade={FADE_DURATION}>
   <div id="holler-fade"></div>
   <div id="holler-dashboard">
-    <form id="holler-form">
-      <input
-        id="holler-input"
-        type="text"
-        name="words"
-        autocomplete="off"
-        value="Type here and hit enter!"
-      />
-    </form>
+    <textarea id="holler-input" name="words" autocomplete="off"
+      >Type here and hit enter!</textarea
+    >
   </div>
 </astro-holler>
 <script>
@@ -96,15 +92,15 @@ export const FADE_DURATION = 15;
     constructor() {
       super();
 
-      const form = document.getElementById("holler-form");
       const input = document.getElementById("holler-input");
       const fade = document.getElementById("holler-fade");
       const duration = parseInt(this.dataset.fade || "3");
-      if (!input || !form || !fade) return;
+      if (!input || !fade) return;
 
       let words = "";
 
-      input.addEventListener("change", function (e) {
+      input.addEventListener("input", function (e) {
+        console.log(e);
         words = e.target.value || "";
       });
 
@@ -112,7 +108,10 @@ export const FADE_DURATION = 15;
         e.target.select();
       });
 
-      form.addEventListener("submit", function (e) {
+      input.addEventListener("keydown", function (e) {
+        if (e.code != "Enter") {
+          return;
+        }
         e.preventDefault();
         const span = document.createElement("span");
         span.innerHTML = String(words);
