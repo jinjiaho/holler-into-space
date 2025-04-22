@@ -1,75 +1,81 @@
 ---
-// Number of particles per 100px x 100px square;
-export const DENSITY = 1;
-export const INTERVAL = 5;
-export const DELAY_FACTOR = 1.5;
+
 ---
 
-<astro-space-bg id="astro-space-bg" data-density={DENSITY} data-interval={INTERVAL} data-delay={DELAY_FACTOR}></astro-space-bg>
+<astro-space-bg id="astro-space-bg"></astro-space-bg>
 <script>
+  const BLOCK_SIZE = 100;
+  const DENSITY = 1;
+  const INTERVAL = 5;
+  const DELAY_FACTOR = 1.5;
+
   class SpaceBg extends HTMLElement {
     constructor() {
       super();
       const container = document.getElementById("astro-space-bg");
       if (!container) return;
 
-      const density = parseInt(container.dataset.density || "1");
-      const interval = parseInt(container.dataset.interval || '20');
-      const delayFactor = parseFloat(container.dataset.delay || '1.5');
-
-      let debouncing = false;
-      function debounce(timeout: number, callback: Function) {
-        if (debouncing) return;
-        debouncing = true;
-        setTimeout(() => {
-          debouncing = false;
-          callback();
-        }, timeout);
-      }
-
-      window.addEventListener('resize', function() {
-        debounce(300, () => {
-          container.innerHTML = '';
-          addStars();
-        });
-      });
+      let w0 = 0;
+      let h0 = 0;
+      let blocks = { x: 0, y: 0 };
+      // let isAddingStars = true;
 
       addStars();
 
       function addStars() {
         if (!container) return;
 
-        const width = container.clientWidth;
-        const height = container.clientHeight;
+        const w1 = container.clientWidth;
+        const h1 = container.clientHeight;
+        if (w1 <= w0 && h1 <= h0) {
+          return;
+        }
+        w0 = w1;
+        h0 = h1;
 
-        const blocksX = Math.ceil(width / 100);
-        const blocksY = Math.ceil(height / 100);
-
-        for (let x = 0; x < blocksX; x++) {
-          for (let y = 0; y < blocksY; y++) {
-            for (let i = 0; i < density; i++) {
+        const newBlocks = getNumBlocks(w1, h1);
+        if (newBlocks.x <= blocks.x && newBlocks.y <= blocks.y) {
+          return;
+        }
+        // isAddingStars = true;
+        const minX = Math.max(0, Math.min(blocks.x - 1, newBlocks.x - 1));
+        const minY = Math.max(0, Math.min(blocks.y - 1, newBlocks.y - 1));
+        const maxX = Math.max(newBlocks.x, blocks.x);
+        const maxY = Math.max(newBlocks.y, blocks.y);
+        for (let x = minX; x < maxX; x++) {
+          for (let y = minY; y < maxY; y++) {
+            for (let i = 0; i < DENSITY; i++) {
               const coords = getCoords(x, y);
               const div = document.createElement("div");
               div.classList.add("astro-space-bg__star");
               div.style.setProperty("--x", `${coords.x}px`);
               div.style.setProperty("--y", `${coords.y}px`);
-              div.style.setProperty('--delay', `${varyDelay(interval, delayFactor)}s`)
-              div.style.setProperty('--duration', `${varyDuration(interval)}s`)
+              div.style.setProperty('--delay', `${varyDelay(INTERVAL, DELAY_FACTOR)}s`)
+              div.style.setProperty('--duration', `${varyDuration(INTERVAL)}s`)
               container.appendChild(div);
             }
           }
         }
+        blocks = newBlocks;
+        // isAddingStars = false;
       }
 
     }
   }
   customElements.define("astro-space-bg", SpaceBg);
 
+  function getNumBlocks(w: number, h: number) {
+    return {
+      x: Math.ceil(w / BLOCK_SIZE),
+      y: Math.ceil(h / BLOCK_SIZE)
+    }
+  }
+
   function getCoords(x: number, y: number) {
-    const x0 = x * 100;
-    const y0 = y * 100;
-    const dX = Math.round(Math.random() * 100);
-    const dY = Math.round(Math.random() * 100);
+    const x0 = x * BLOCK_SIZE;
+    const y0 = y * BLOCK_SIZE;
+    const dX = Math.round(Math.random() * BLOCK_SIZE);
+    const dY = Math.round(Math.random() * BLOCK_SIZE);
     return { x: x0 + dX, y: y0 + dY };
   }
 
