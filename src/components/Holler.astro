@@ -24,10 +24,15 @@ import { FADE_DURATION } from "../config";
     width: 90vw;
     transform: translate(-50%, -50%);
     text-align: center;
-    padding: 2vw;
     display: flex;
     flex-direction: column;
     justify-content: center;
+  }
+
+  .holler * {
+    font-size: 1.1rem;
+    line-height: 1.4rem;
+    font-family: "Opus One";
   }
 
   #holler-fade {
@@ -44,7 +49,7 @@ import { FADE_DURATION } from "../config";
 
   #holler-fade .hollered {
     position: absolute;
-    top: 0;
+    top: -1rem;
     left: 50%;
     width: 100%;
     transform-origin: center;
@@ -61,11 +66,9 @@ import { FADE_DURATION } from "../config";
     border: none;
     color: honeydew;
     text-align: center;
-    padding: 1vw;
-    font-size: 1.1rem;
+    padding: 0 1vw;
     width: 100%;
     box-sizing: border-box;
-    font-family: "Opus One";
   }
 
   #holler-input:focus {
@@ -80,7 +83,7 @@ import { FADE_DURATION } from "../config";
       type="text"
       name="words"
       autocomplete="off"
-      value="Type something here and hit enter!"
+      value="Type here and hit enter!"
     />
   </form>
 </astro-holler>
