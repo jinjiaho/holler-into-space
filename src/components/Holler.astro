@@ -1,8 +1,19 @@
 ---
-
+import { FADE_DURATION } from "../config";
 ---
 
-<style>
+<style define:vars={{ duration: `${FADE_DURATION}s` }} is:global>
+  @keyframes sendOff {
+    0% {
+      opacity: 1;
+      transform: translate(-50%, 0) scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: translate(-50%, -25vh) scale(0);
+    }
+  }
+
   .holler {
     box-sizing: border-box;
     color: honeydew;
@@ -10,12 +21,38 @@
     position: absolute;
     top: 50%;
     left: 50%;
+    width: 90vw;
     transform: translate(-50%, -50%);
     text-align: center;
     padding: 2vw;
     display: flex;
     flex-direction: column;
     justify-content: center;
+  }
+
+  #holler-fade {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  #holler-fade .hollered {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 100%;
+    transform-origin: center;
+  }
+
+  #holler-fade .hollered.fading {
+    animation: sendOff var(--duration) forwards;
+    animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
   }
 
   #holler-input {
@@ -28,40 +65,62 @@
     font-size: 1.1rem;
     width: 100%;
     box-sizing: border-box;
+    font-family: "Opus One";
   }
 
   #holler-input:focus {
     outline: none;
   }
 </style>
-<section class="holler">
+<astro-holler class="holler" data-fade={FADE_DURATION}>
+  <div id="holler-fade"></div>
   <form id="holler-form">
     <input
       id="holler-input"
       type="text"
       name="words"
       autocomplete="off"
-      value="Type something and hit enter!"
+      value="Type something here and hit enter!"
     />
   </form>
-</section>
+</astro-holler>
 <script>
-  const form = document.getElementById("holler-form");
-  const input = document.getElementById("holler-input");
+  class Holler extends HTMLElement {
+    constructor() {
+      super();
 
-  let words;
+      const form = document.getElementById("holler-form");
+      const input = document.getElementById("holler-input");
+      const fade = document.getElementById("holler-fade");
+      const duration = parseInt(this.dataset.fade || "3");
+      if (!input || !form || !fade) return;
 
-  input.addEventListener("change", function (e) {
-    words = e.target.value;
-  });
+      let words = "";
 
-  input.addEventListener("focus", function (e) {
-    e.target.select();
-  });
+      input.addEventListener("change", function (e) {
+        words = e.target.value || "";
+      });
 
-  form.addEventListener("submit", function (e) {
-    e.preventDefault();
-    input.value = "";
-    words = "";
-  });
+      input.addEventListener("focus", function (e) {
+        e.target.select();
+      });
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const span = document.createElement("span");
+        span.innerHTML = String(words);
+        span.classList.add("hollered");
+        fade.appendChild(span);
+
+        input.value = "";
+        words = "";
+
+        span.classList.add("fading");
+        setTimeout(function () {
+          span.remove();
+        }, duration * 1000);
+      });
+    }
+  }
+  customElements.define("astro-holler", Holler);
 </script>

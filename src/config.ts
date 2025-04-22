@@ -11,3 +11,5 @@ export const WIND = {
 export const DENSITY = 1;
 export const INTERVAL = 5;
 export const DELAY_FACTOR = 1.5;
+
+export const FADE_DURATION = 15;
