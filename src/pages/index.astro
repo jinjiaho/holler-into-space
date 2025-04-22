@@ -4,7 +4,7 @@ import DeepSpace from "../components/DeepSpace.astro";
 import Holler from "../components/Holler.astro";
 ---
 
-<style>
+<style is:global>
   @font-face {
     font-family: "Opus One";
     src:
@@ -19,8 +19,11 @@ import Holler from "../components/Holler.astro";
     width: 100%;
     height: 100%;
     position: fixed;
-    color: honeydew;
+  }
+
+  main * {
     font-family: "Opus One";
+    color: ghostwhite;
   }
 </style>
 <Layout title="Holler into Space">

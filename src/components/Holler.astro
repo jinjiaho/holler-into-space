@@ -1,5 +1,5 @@
 ---
-import { FADE_DURATION } from "../config";
+export const FADE_DURATION = 15;
 ---
 
 <style define:vars={{ duration: `${FADE_DURATION}s` }} is:global>
@@ -16,7 +16,6 @@ import { FADE_DURATION } from "../config";
 
   .holler {
     box-sizing: border-box;
-    color: honeydew;
     z-index: 10;
     position: absolute;
     top: 50%;
@@ -32,7 +31,6 @@ import { FADE_DURATION } from "../config";
   .holler * {
     font-size: 1.1rem;
     line-height: 1.4rem;
-    font-family: "Opus One";
   }
 
   #holler-fade {
@@ -64,7 +62,6 @@ import { FADE_DURATION } from "../config";
     background: none;
     box-shadow: none;
     border: none;
-    color: honeydew;
     text-align: center;
     padding: 0 1vw;
     width: 100%;
