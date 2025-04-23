@@ -165,11 +165,13 @@
 
 <script>
   const FADE_DURATION = 3;
+  const AUDIO_PATH = "/HAH!_00.wav";
+
   class Holler extends HTMLElement {
     constructor() {
       super();
 
-      const container = this;
+      const audio = new Audio(AUDIO_PATH);
       const form = document.getElementById("holler-form");
       const input = document.getElementById("holler-input");
       const hollerBtn = document.getElementById("holler-button");
@@ -198,6 +200,9 @@
         span.innerHTML = String(words);
         span.classList.add("hollered");
         fade.appendChild(span);
+        if (audio) {
+          audio.play();
+        }
 
         input.value = "";
         words = "";
