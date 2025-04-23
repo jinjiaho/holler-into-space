@@ -11,5 +11,9 @@
   "dependencies": {
     "astro": "^5.7.4",
     "three": "^0.175.0"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.3"
   }
 }
