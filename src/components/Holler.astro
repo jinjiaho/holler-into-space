@@ -136,6 +136,12 @@
     transition: all 0.3s ease;
   }
 
+  @media screen and (min-width: 768px) {
+    .holler {
+      padding: 10vw;
+    }
+  }
+
   @media screen and (orientation: landscape) {
     .holler {
       padding: 2.5vw 15vw;
@@ -188,50 +194,45 @@
 
       input.addEventListener("focus", function (e) {
         e.target.select();
-        scrollToForm();
+        form.scrollIntoView();
       });
 
       form.addEventListener("submit", function (e) {
         e.preventDefault();
+        animateBtnPress();
         if (words === "") {
-          animateBtnPress();
           return;
         }
-        const span = document.createElement("span");
-        span.innerHTML = String(words);
-        span.classList.add("hollered");
-        fade.appendChild(span);
+        sendWords(words);
+        words = "";
+
         if (audio) {
           audio.play();
         }
 
         input.value = "";
-        words = "";
+        input.dispatchEvent(new Event("focus"));
+      });
+
+      function sendWords(text: string) {
+        if (!fade) return;
+        const span = document.createElement("span");
+        span.innerHTML = String(text);
+        span.classList.add("hollered");
+        fade.appendChild(span);
 
         span.classList.add("fading");
         setTimeout(function () {
           span.remove();
         }, FADE_DURATION * 1000);
-      });
-
-      hollerBtn.addEventListener("click", animateBtnPress);
-
-      input.dispatchEvent(new Event("focus"));
+      }
 
       function animateBtnPress() {
-        if (input) {
-          input.focus();
-        }
         if (!hollerBtn) return;
         hollerBtn.classList.add("active");
         setTimeout(function () {
           hollerBtn.classList.remove("active");
         }, 1000);
-      }
-      function scrollToForm() {
-        if (!input) return;
-        const y = input.clientTop;
-        window.scrollTo({ top: y });
       }
     }
   }
