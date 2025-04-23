@@ -50,8 +50,11 @@
               div.classList.add("astro-space-bg__star");
               div.style.setProperty("--x", `${coords.x}px`);
               div.style.setProperty("--y", `${coords.y}px`);
-              div.style.setProperty('--delay', `${varyDelay(INTERVAL, DELAY_FACTOR)}s`)
-              div.style.setProperty('--duration', `${varyDuration(INTERVAL)}s`)
+              div.style.setProperty(
+                "--delay",
+                `${varyDelay(INTERVAL, DELAY_FACTOR)}s`,
+              );
+              div.style.setProperty("--duration", `${varyDuration(INTERVAL)}s`);
               container.appendChild(div);
             }
           }
@@ -59,7 +62,6 @@
         blocks = newBlocks;
         // isAddingStars = false;
       }
-
     }
   }
   customElements.define("astro-space-bg", SpaceBg);
@@ -67,8 +69,8 @@
   function getNumBlocks(w: number, h: number) {
     return {
       x: Math.ceil(w / BLOCK_SIZE),
-      y: Math.ceil(h / BLOCK_SIZE)
-    }
+      y: Math.ceil(h / BLOCK_SIZE),
+    };
   }
 
   function getCoords(x: number, y: number) {
@@ -84,33 +86,33 @@
   }
 
   function varyDuration(base: number) {
-    const delta = (Math.random() - 0.5) * base / 4;
+    const delta = ((Math.random() - 0.5) * base) / 4;
     return delta + base;
   }
 </script>
 <style is:global>
-@keyframes twinkle {
-  0% {
-    opacity: 0;
-    transform: scale(0);
+  @keyframes twinkle {
+    0% {
+      opacity: 0;
+      transform: scale(0);
+    }
+    25% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(2);
+    }
+    75% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(0);
+    }
   }
-  25% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(2);
-  }
-  75% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  100% {
-    opacity: 0;
-    transform: scale(0):
-  }
-}
 
   #astro-space-bg {
     position: absolute;

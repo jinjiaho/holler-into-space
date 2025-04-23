@@ -1,34 +1,13 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import DvhFullscreen from "../components/DvhFullscreen.astro";
 import DeepSpace from "../components/DeepSpace.astro";
 import Holler from "../components/Holler.astro";
 ---
 
-<style is:global>
-  @font-face {
-    font-family: "Opus One";
-    src:
-      url("/fonts/OpusOne-Regular.woff2") format("woff2"),
-      url("/fonts/OpusOne-Regular.woff") format("woff");
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
-  }
-
-  main {
-    width: 100vw;
-    height: 100vh;
-    position: relative;
-  }
-
-  main * {
-    font-family: "Opus One";
-    color: ghostwhite;
-  }
-</style>
 <Layout title="Holler into Space">
-  <main>
+  <DvhFullscreen>
     <DeepSpace />
     <Holler />
-  </main>
+  </DvhFullscreen>
 </Layout>

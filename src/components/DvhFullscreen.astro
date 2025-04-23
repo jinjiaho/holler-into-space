@@ -1,0 +1,28 @@
+---
+
+---
+
+<style>
+  .dvh-fullscreen {
+    width: 100%;
+    height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
+    position: relative;
+  }
+</style>
+<astro-dvh-fullscreen class="dvh-fullscreen"><slot /></astro-dvh-fullscreen>
+<script>
+  class DvhFullscreen extends HTMLElement {
+    constructor() {
+      super();
+      const container = this;
+
+      function setVh() {
+        container.style.setProperty("--vh", `${window.innerHeight * 0.01}px`);
+      }
+      setVh();
+      window.addEventListener("resize", setVh);
+    }
+  }
+  customElements.define("astro-dvh-fullscreen", DvhFullscreen);
+</script>
