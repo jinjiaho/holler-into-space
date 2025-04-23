@@ -23,11 +23,17 @@ const { title } = Astro.props;
   <body>
     <slot />
     <footer>
-      <p>
-        <a href="https://freesound.org/s/85896/" target="_blank"
-          >HAH! 00.wav by sandyrb</a
-        > -- License: Attribution 4.0
-      </p>
+      <p>Attributions:</p>
+      <ul class="attributions">
+        <li>
+          <pre><a href="https://github.com/chaychoong/opusone/" target="_blank">OpusOne by chaychoong</a>
+SIL Open Font License, Version 1.1</pre>
+        </li>
+        <li>
+          <pre><a href="https://freesound.org/s/85896/" target="_blank">HAH! 00.wav by sandyrb</a>
+License: Attribution 4.0</pre>
+        </li>
+      </ul>
     </footer>
   </body>
   <style is:global>
@@ -67,7 +73,21 @@ const { title } = Astro.props;
     }
 
     footer * {
+      color: rgba(180, 180, 180, 0.9);
+    }
+
+    a {
       color: slateblue;
+    }
+
+    .attributions {
+      list-style-type: "\02726";
+      padding-inline-start: 0.5rem;
+    }
+
+    .attributions > li > pre {
+      font-size: 0.75rem;
+      padding-left: 0.5rem;
     }
   </style>
 </html>
