@@ -76,7 +76,6 @@
     background-color: rgba(250, 250, 250, 0.2);
     border-radius: 2rem;
     display: flex;
-    max-height: 80%;
     justify-content: start;
     align-items: stretch;
     flex-direction: column;
@@ -91,6 +90,7 @@
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
+    gap: 1rem;
     border: 0.2rem dashed rgba(255, 255, 255, 0.15);
     width: 100%;
     height: 100%;
@@ -138,10 +138,11 @@
 
   @media screen and (orientation: landscape) {
     .holler {
-      padding: 5vw 15vw;
+      padding: 2.5vw 15vw;
     }
     #holler-dashboard {
       padding: 2.5vw;
+      max-height: 90%;
     }
     #holler-fade {
       padding: 7.5vw;
