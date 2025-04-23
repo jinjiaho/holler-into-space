@@ -14,6 +14,19 @@ export const FADE_DURATION = 15;
     }
   }
 
+  @keyframes buttonPress {
+    0% {
+      box-shadow: inset 0 -0.25rem 0.5rem rgba(15, 15, 15, 0.5);
+    }
+    25%,
+    75% {
+      box-shadow: inset 0 0.25rem 0.25rem rgba(15, 15, 15, 0.25);
+    }
+    100% {
+      box-shadow: inset 0 -0.25rem 0.5rem rgba(15, 15, 15, 0.5);
+    }
+  }
+
   .holler {
     box-sizing: border-box;
     z-index: 10;
@@ -50,7 +63,7 @@ export const FADE_DURATION = 15;
   }
 
   #holler-dashboard {
-    background-color: rgba();
+    background-color: slategray;
     border-top-left-radius: 50%;
     border-top-right-radius: 50%;
     display: flex;
@@ -58,8 +71,15 @@ export const FADE_DURATION = 15;
     align-items: stretch;
     flex-direction: column;
     gap: 1rem;
-    padding: 3rem 5% 3rem;
+    padding: 3rem 5% 3%;
     box-shadow: inset 0px 8px 24px 0px rgba(15, 15, 15, 0.7);
+  }
+
+  #holler-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
   }
 
   #holler-input {
@@ -76,24 +96,61 @@ export const FADE_DURATION = 15;
   #holler-input:focus {
     outline: none;
   }
+
+  #holler-button {
+    background-color: firebrick;
+    border-radius: 1.5rem;
+    box-shadow: inset 0 -0.25rem 0.5rem rgba(15, 15, 15, 0.5);
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 1.3rem;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  #holler-button:focus-within {
+    outline-color: orangered;
+    filter: brightness(1.05);
+    transition: filter 0.3s ease;
+  }
+
+  #holler-button.active {
+    animation: buttonPress 0.5s forwards;
+    transition: all 0.3s ease;
+  }
+
+  @media screen and (orientation: landscape) {
+    #holler-dashboard {
+      grid-template-rows: auto 7rem;
+    }
+  }
 </style>
 <astro-holler class="holler" data-fade={FADE_DURATION}>
   <div id="holler-fade"></div>
   <div id="holler-dashboard">
-    <textarea id="holler-input" name="words" autocomplete="off"
-      >Type here and hit enter!</textarea
-    >
+    <form id="holler-form">
+      <input
+        id="holler-input"
+        name="words"
+        autocomplete="off"
+        value="Type here and hit enter!"
+      />
+      <button id="holler-button" type="submit">Holler!</button>
+    </form>
   </div>
 </astro-holler>
+
 <script>
   class Holler extends HTMLElement {
     constructor() {
       super();
 
+      const form = document.getElementById("holler-form");
       const input = document.getElementById("holler-input");
+      const hollerBtn = document.getElementById("holler-button");
       const fade = document.getElementById("holler-fade");
       const duration = parseInt(this.dataset.fade || "3");
-      if (!input || !fade) return;
+      if (!input || !form || !hollerBtn || !fade) return;
 
       let words = "";
 
@@ -108,10 +165,7 @@ export const FADE_DURATION = 15;
         e.target.select();
       });
 
-      input.addEventListener("keydown", function (e) {
-        if (e.code != "Enter") {
-          return;
-        }
+      form.addEventListener("submit", function (e) {
         e.preventDefault();
         const span = document.createElement("span");
         span.innerHTML = String(words);
@@ -125,6 +179,14 @@ export const FADE_DURATION = 15;
         setTimeout(function () {
           span.remove();
         }, duration * 1000);
+      });
+
+      hollerBtn.addEventListener("click", function (e) {
+        hollerBtn.classList.add("active");
+        input.focus();
+        setTimeout(function () {
+          hollerBtn.classList.remove("active");
+        }, 1000);
       });
     }
   }
