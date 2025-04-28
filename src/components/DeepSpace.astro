@@ -20,6 +20,15 @@
       let blocks = getNumBlocks(width, height);
 
       addStars();
+
+      document.addEventListener("visibilitychange", function () {
+        if (document.hidden) {
+          container.classList.remove("animating");
+        } else {
+          container.classList.add("animating");
+        }
+      });
+
       function addStars() {
         if (!container) return;
 
@@ -41,6 +50,8 @@
             }
           }
         }
+
+        container.classList.add("animating");
       }
     }
   }
@@ -122,8 +133,16 @@
     position: absolute;
     top: var(--y);
     left: var(--x);
-    animation: twinkle var(--duration) infinite;
     animation-delay: var(--delay);
     transition: all var(--duration) ease;
+
+    &.animating {
+    }
+  }
+
+  #astro-space-bg.animating {
+    & .astro-space-bg__star {
+      animation: twinkle var(--duration) infinite;
+    }
   }
 </style>
